@@ -1,0 +1,79 @@
+---
+title: "Daily Shelter Capacity"
+author: "Sky Suh"
+date: Jan 14, 2024
+abstract: "This paper will explain a daily list of active overnight shelter and related services of different organizations of the Shelter Support in Toronto based on Housing Administration division's Shelter Management Information System  database that update the daily information about the shelter and overnight service programs including operator, location, occupancy, types and capacity. In this report, it will talk about the connection between the capacity and the location of the area both in Toronto and GTA that will be easier to compare based on the graphs presenting below this paragraph."
+format: pdf
+number-sections: true
+bibliography: bibliography.bib
+---
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+#install.packages("opendatatoronto")
+library(tidyverse)
+library(opendatatoronto)
+list<-list_package_resources("https://open.toronto.ca/dataset/daily-shelter-overnight-service-occupancy-capacity/")
+data<-list[5,]%>% get_resource()
+```
+
+
+# Introduction
+
+Due to the huge impact of the pandemic, the number of homeless are higher than usually in the society, particularly, in Toronto, the housing price and economies are way higher than other provinces comparing to Vancouver or Montreal where are  well-known for the expensive housing. Because of this result, the City of Toronto and Government of Canada try to provide the different ways to help these people to live in the particular city, especially, they are helping for the housing like shelters for the overnight since the price of Toronto is higher than any other provinces. Increasing number of homeless means higher rate of the shelters in Toronto and the capacity and occupancy of the shelters are depending on the location. This report will focus on daily shelter and overnight service occupancy and capacity, in detailed, it will talk about how the capacity of the shelters and the location in Toronto are related each other. Based on the data sets provided by SMIS, it will present as the graph. 
+
+
+# Data {#sec-data}
+
+Based on what it wrote in the introduction part, this graph will talk about daily list of active overnight shelter and allied and related services in the Shelter Support and Housing Administration division in Toronto to present the number of the shelters based on the data set that daily uploaded information which is adding up everyday which help to compare better and recent status. 
+
+```{r}
+#| label: overnight shelter 
+#| fig-cap: Overnight shelter capacity
+#| echo: false
+
+ggplot(data, aes(x = LOCATION_CITY)) +
+  geom_histogram(stat = "count")
+```
+
+
+And also you will see the differences of the capacity in the shelters based on their locations since the number of homeless are different in each areas in Toronto in general including the outside of the GTA. It explains which part of Toronto has more daily overnight shelters and homeless to compare other part in Toronto. 
+
+```{r}
+#| label: daily overnight shelter 
+#| fig-cap: Relationship between capcity and locations
+#| echo: false
+#| warning: false
+#| message: false
+
+data |> 
+  ggplot(aes(x = SERVICE_USER_COUNT, y = LOCATION_CITY)) +
+  geom_point(alpha = 0.8) +
+  theme_minimal() +
+  labs(x = "SERVICE_USER_COUNT ()",
+       y = "LOCATION_CITY ()")
+```
+
+
+# Results and Discussion
+Toronto is one of the city that has enlarged unhoused population across Canada. It depends on the location but mostly, the weather of Canada in winter is critically freezing and cold to live and stay outside without any houses towards people without houses. It means Toronto needs enough shelters to hold everyone who needs the shelters. For this paper, I was interested in understanding the relations between the capacity of shelters and its location in Toronto and see how the differences in general. 
+
+I use data provided by the City of Toronto as the open source - open data Toronto about Toronto shelter for both daily and overnight for the occupancy and capacity. Particularly, the time period of daily and overnight is the occupancy and capacity. This paper is interested in difference of the relation with the capacity and the location in Toronto. I cleaned, tided, made a graph and analyzed the dataset based on the open resource in Toronto using different R statistical programming language R (R Core Team 2023) as well as the tidyverse (Wickham 2017), and, opendatatoronto (Gelfand 2022). Based on this language and data, I was able to make the graph.
+
+Then, I found both daily and overnight shelters near to downtown Toronto, it has more shelters and capacity to hold more people and far away from downtown such as Etobicoke or Vaughan have less capacities in their shelters. 
+
+The dataset is on the basis of shelters from open data source of Toronto, and so my results may be skewed by changes that are specific to especially large or small capacity for the shelters. It may be that specific areas are particularly having more capacity of shelters. Additionally, I was concerned with similar counts for the capacity based on their location, but if the location for this topic becomes expanded, then it will be the great statistic proportion to add.
+
+
+## Weaknesses and next steps
+
+Weaknesses and next steps should be including the table and other specific graph based on more academical resources not only focusing on open data resources but other websites that provided by government of Canada or city of Toronto. 
+
+\newpage
+
+# References
+R Core Team. 2023. R: A Language and Environment for Statistical Computing. Vienna, Austria: R Foundation for Statistical Computing. https://www.R-project.org/.
+Wickham. 2017. tidyverse: Easily Install and Load the “Tidyverse”. https://CRAN.R-project.org/package=tidyverse.
+Gelfand, Sharla. 2022. opendatatoronto: Access the City of Toronto Open Data Portal. https://CRAN.R-project.org/package=opendatatoronto.
